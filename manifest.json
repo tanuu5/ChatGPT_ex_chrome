@@ -1,22 +1,29 @@
 {
-    "manifest_version": 2,
-    "name": "ChatGPT 拡張機能",
-    "version": "1.0",
-       "description": "拡張機能の説明文",
+    "manifest_version": 3,
+    "name": "GPT-ChatDIY",
+    "version": "1.2",
+    "description": "ChatGPTに簡単にアクセスできるこの拡張機能を使用して、疑問を解決したり、テキストを生成したりしましょう。個別のAPIキー設定と履歴保存機能、コスト試算機能を備えています。",
     "icons": {
-    "16": "icon-16.png",
-    "48": "icon-48.png",
-    "128": "icon-128.png"
+        "16": "icon-16.png",
+        "48": "icon-48.png",
+        "128": "icon-128.png"
     },
     "content_scripts": [
         {
-            "matches": ["<all_urls>"],
-            "js": ["chatgpt.js"]
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "chatgpt.js"
+            ]
         }
     ],
-    "browser_action": {
-        "default_popup": "popup.html"
-    },
     "options_page": "options.html",
-    "permissions": ["storage", "activeTab", "http://*/*", "https://*/*"]
+    "permissions": [
+        "storage",
+        "https://api.openai.com/"
+    ],
+    "action": {
+        "default_popup": "popup.html"
+    }
 }

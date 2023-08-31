@@ -1,16 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
- <title>フォーム</title>
- <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <title>GPT-ChatDIY Popup</title>
+    <style>
+        body {
+            width: 400px;
+        }
+        #history-section {
+            display: none;
+        }
+    </style>
 </head>
-    <body>
-    <a>以下に入力して送信ボタンを押してください。</a>
+<body>
+    <h1>GPT-ChatDIY</h1>
         <form id="chat-form">
             <textarea id="message-input" cols="50" rows="30"></textarea>
-            <button type="submit">送信</button>
+            <button type="submit">Send</button>
         </form>
         <div id="chat-log"></div>
-    </body>
+        <div id="loading-indicator">
+          Please wait a moment after you hit send until you hear back...<br>
+(This message will disappear when the message is successfully received.)
+        </div>
+
+    <div id="history-section">
+        <h2>History</h2>
+        <div id="history"></div>
+    </div>
+    <div id="additional-info">
+        <p><span id="counter">0</span></p>
+    </div>
+    <button id="toggle-history">Show/hide history</button><br><a>You can also delete or download the history from the options.</a>
     <script src="chatgpt.js"></script>
+</body>
 </html>
