@@ -16,16 +16,16 @@
     <h1>GPT-ChatDIY</h1>
         <form id="chat-form">
             <textarea id="message-input" cols="50" rows="30"></textarea>
-            <button type="submit">Send</button>
+            <button type="submit"><span id="send-button"></span></button>
         </form>
         <div id="chat-log"></div>
         <div id="loading-indicator">
-          Please wait a moment after you hit send until you hear back...<br>
-(This message will disappear when the message is successfully received.)
+          <span id="message-placeholder1"></span><br>
+          <span id="message-placeholder2"></span>
         </div>
 
     <div id="history-section">
-        <h2>History</h2>
+        <h2>history</h2>
         <div id="history"></div>
     </div>
     <div id="additional-info">

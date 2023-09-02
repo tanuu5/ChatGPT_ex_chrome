@@ -1,0 +1,10 @@
+{
+  "extensionName": {
+    "message": "GPT-ChatDIY",
+    "description": "拡張機能の名前。"
+  },
+  "extensionDescription": {
+    "message": "ChatGPTに簡単にアクセスできるこの拡張機能を使用して、疑問を解決したり、テキストを生成したりしましょう。",
+    "description": "拡張機能の説明。"
+  }
+}

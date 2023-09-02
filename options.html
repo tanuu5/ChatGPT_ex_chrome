@@ -2,63 +2,91 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>GPT-ChatDIY Settings</title>
+    <title>setting</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
         }
         .section {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         .section h2 {
             margin-top: 0;
         }
+        p {
+            margin: 5px;
+        }
     </style>
 </head>
 <body>
-    <h1>GPT-ChatDIY Settings</h1>
+    <h1 id="settings-title"></h1>
 
-    <!-- API Key Section -->
+    <!-- <h2 id="api-key-title"></h2> Section -->
     <div class="section">
-        <h2>API Key</h2>
-        <p>Enter your OpenAI API key below:</p>
+        <h2 id="api-key-title"></h2>
+        <p><span id="api-key-instruction"></span></p>
         <form id="settings-form">
             <input type="text" id="api-key-input" required>
-            <button type="submit">Save</button>
+            <button type="submit"><span id="save-button"></span></button>
         </form>
     </div>
 
     <!-- Counter and Cost Section -->
     <div class="section">
-        <h2>Counter and Cost</h2>
-        <p>Current Counter: <span id="current-counter">0</span></p>
-        <p>Estimated Cost: $<span id="estimated-cost">0.00</span></p>
-        <p>Check the <a href="https://platform.openai.com/pricing" target="_blank">OpenAI Pricing page</a> for accurate billing.</p>
-        <label for="manual-counter">Set Counter Manually:</label>
+        <h2 id="counter-and-cost"></h2>
+	<p><span id="current-counter-title"></span><span id="current-counter">0</span></p>
+        <p><span id="estimated-cost-title"></span> $<span id="estimated-cost">0.00</span></p>
+        <p><span id="check-openai-pricing"></span>：<a href="https://platform.openai.com/pricing" target="_blank">https://platform.openai.com/pricing</a></p>
+        <p><label id="set-counter-manually" for="manual-counter"></label>
         <input type="number" id="manual-counter" min="0">
-        <button id="set-counter">Set Counter</button>
+        <button id="set-counter"></button></p>
     </div>
 
     <!-- History Section -->
     <div class="section">
-        <h2>History</h2>
-        <button id="reset-history">Reset History</button>
-        <button id="download-history">Download History</button>
+        <h2 id="history"></h2>
+        <button id="download-history"></button>
     </div>
 
     <!-- Reset Counter Section -->
     <div class="section">
-        <h2>Reset</h2>
-        <button id="reset-counter">Reset Counter</button>
+        <h2 id="reset"></h2>
+        <button id="reset-history"></button>
+        <button id="reset-counter"></button>
+    </div>
+
+    <!-- Personal Information Check Section -->
+    <div class="section">
+        <h2 id="personal-info-check"></h2>
+        <p id="enable-disable-info-check"></p>
+        <input type="checkbox" id="enablePersonalInfoCheck" name="enablePersonalInfoCheck">
+        <label id="enable-info-check-detail" for="enablePersonalInfoCheck"></label>
+    </div>
+
+    <div class="section">
+        <h2 id="language-title"></h2>
+        <select id="language-select">
+            <option value="en">English</option>
+            <option value="ja">日本語</option>
+        </select>
     </div>
 
     <script src="options.js"></script>
 
+<hr>
 <footer>
   <p>&copy; 2023 <a href="https://note.com/tank_ai" target="_blank" rel="noopener noreferrer">たぬ</a>. All rights reserved.</p>
   <p>Powered by <a href="https://openai.com" target="_blank" rel="noopener noreferrer">OpenAI's ChatGPT</a></p>
+  <p>Source code available on <a href="https://github.com/tanuu5/ChatGPT_ex_chrome" target="_blank" rel="noopener noreferrer">GitHub</a></p>
 </footer>
 
+<!-- デバッグ用 chrome.storage.sync 変数および格納されている値の確認 
+    <div class="section">
+        <h2>デバッグエリア</h2>
+            <button id="show-storage">Show Storage</button>
+            <div id="storage-output"></div>
+    </div>
+-->
 </body>
 </html>

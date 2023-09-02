@@ -1,0 +1,10 @@
+{
+  "extensionName": {
+    "message": "GPT-ChatDIY",
+    "description": "Name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Use this extension to easily access ChatGPT, solve questions, generate text, and more.",
+    "description": "Description of the extension."
+  }
+}
