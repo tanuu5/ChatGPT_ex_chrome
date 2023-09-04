@@ -7,14 +7,16 @@ var alertMessages = {
         proceed: 'Are you sure you want to proceed?(Press OK to send.)',
         cancel: 'The message was not sent because a cancel was pressed.\nPlease mask or delete the relevant part and resubmit.',
         apiKeyError: 'The API key is incorrect.',
-        otherError: 'An error occurred. HTTP Status Code: '
+        otherError: 'An error occurred. HTTP Status Code: ',
+        criticalError: 'CriticalError'
     },
     ja: {
         detected: '個人情報が検出されました。\n検出された項目: \n',
         proceed: '本当に送信してもよろしいですか？（送信するにはOKを押してください。）',
         cancel: 'キャンセルが押されたため、メッセージは送信されませんでした。\n関連する部分をマスクまたは削除して、再送信してください。',
         apiKeyError: 'APIキーが間違っています。',
-        otherError: 'エラーが発生しました。HTTPステータスコード: '
+        otherError: 'エラーが発生しました。HTTPステータスコード: ',
+        criticalError: 'クリティカルエラー'
     }
 };
 
@@ -23,17 +25,20 @@ document.getElementById('history').innerText = historyText;
 document.getElementById('counter').innerText = "Counter: " + counter;
 
 async function sendToChatGPT(messages) {
+
     // 状態変数
     let shouldProceed = true;
+    let inputText = document.getElementById('message-input').value;  // この変数を関数全体で使用する
 
     // 送信前に個人情報をチェック
     const checkPersonalInfo = new Promise((resolve) => {
+    
     chrome.storage.sync.get(['enablePersonalInfoCheck', 'selectedLanguage'], function(data) {
         var enableCheck = data.enablePersonalInfoCheck || false;
         var language = data.selectedLanguage || 'en';
         var msg = alertMessages[language];
             if (enableCheck) {
-                var inputText = document.getElementById('message-input').value;
+                //var inputText = document.getElementById('message-input').value;
                 var phoneRegex = /\d{2,4}-\d{2,4}-\d{4}/g;
                 var emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
                 var postalRegex = /\d{3}-\d{4}/g;
@@ -57,6 +62,32 @@ async function sendToChatGPT(messages) {
             }
             resolve(shouldProceed); // Promiseをresolveして値を返す
         });
+        
+        if (!shouldProceed) {
+        return;  // 処理を中止
+    }
+
+    // 送信するメッセージをmessagesに格納
+    const messages = inputText;
+
+    // 辞書チェック Get dictionary from local storage
+    const csvContent = localStorage.getItem('dictionaryCSV');
+    //alert(`CSV Content: ${csvContent ? csvContent : 'No CSV found in local storage'}`); デバッグ用
+
+    if (csvContent) {
+        const words = csvContent.split(',').map(word => word.trim());  // カンマで分割後、前後の空白を削除
+        //alert(`Parsed Words: ${words.join(', ')}`); デバッグ用
+
+        // 入力テキストが辞書の単語を完全に含む場合にマッチ
+        const matchedWords = words.filter(word => inputText.includes(word));
+        //alert(`Matched Words: ${matchedWords.length > 0 ? matchedWords.join(', ') : 'No matched words'}`); デバッグ用
+
+        if (matchedWords.length > 0) {
+            shouldProceed = false;  // ここでshouldProceedをfalseに設定することで、辞書に一致した場合問答無用で中断する。
+            alert(`個人情報が検出されました。\n検出された項目: ${matchedWords.join(', ')}\n以降のチェックで送信を許容した場合でも送信されません。`);
+        }
+    }
+        
     });
 
     shouldProceed = await checkPersonalInfo; // 非同期処理が完了するまで待つ

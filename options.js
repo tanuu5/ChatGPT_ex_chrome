@@ -37,6 +37,13 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('history', '');
         alert('History has been reset.');
     });
+    
+    // Delete button
+    document.getElementById('reset-dictionary').addEventListener('click', function() {
+        localStorage.removeItem('dictionaryCSV');
+        updateDictionaryStatus();
+        alert('Dictionary has been reset.');
+    });
 
     // Download History
     document.getElementById('download-history').addEventListener('click', function() {
@@ -101,9 +108,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const reset = language === 'ja' ? 'リセット' : 'Reset';
     const resetHistory = language === 'ja' ? '履歴のリセット' : 'Reset History';
     const resetCounter = language === 'ja' ? 'カウンターリセット' : 'Reset Counter';
+    const resetDictionary = language === 'ja' ? '辞書設定リセット' : 'Reset Dictionary Settings';
     const personalInfoCheck = language === 'ja' ? '個人情報チェック' : 'Personal Information Check';
     const enableDisableInfoCheck = language === 'ja' ? '個人情報チェック機能の有効・無効を設定します。' : 'Enable or disable the personal information check feature.';
     const enableInfoCheckDetail = language === 'ja' ? '個人情報チェックを有効にする(電話番号、メールアドレス、郵便番号のみ検出)' : 'Enable Personal Information Check.(Only phone numbers, email addresses, and zip codes are detected.)';
+    const dictionarySettings = language === 'ja' ? '辞書設定' : 'Dictionary Settings';
+    const suppressWordsInstruction = language === 'ja' ? '送信を抑止したい単語（企業名、製品名、人名など）を登録することができます。' : 'You can register words (company name, product name, person name, etc.) that you wish to suppress from being sent.';
+    const dictionaryFileFormat = language === 'ja' ? '辞書ファイルは「任意の名前.csv」。内容は「株式会社あいうえお,かきくけコーポレーション」のように単語をカンマで区切られたデータです。' : 'The dictionary file is "any name.csv". The content is data with words separated by commas, such as "ABCorporation, DEFGHInc".';
+    const uploadButton = language === 'ja' ? 'アップロード' : 'Upload';
+    const downloadButton = language === 'ja' ? 'ダウンロード' : 'Download';
     
     document.getElementById('settings-title').textContent = settingsTitle;
     document.getElementById('api-key-title').textContent = apiKeyTitle;
@@ -121,10 +134,17 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('reset').textContent = reset;
     document.getElementById('reset-history').textContent = resetHistory;
     document.getElementById('reset-counter').textContent = resetCounter;
+    document.getElementById('dictionary-settings').textContent = dictionarySettings;
     document.getElementById('personal-info-check').textContent = personalInfoCheck;
     document.getElementById('enable-disable-info-check').textContent = enableDisableInfoCheck;
     document.getElementById('enable-info-check-detail').textContent = enableInfoCheckDetail;
+    document.getElementById('reset-dictionary').textContent = resetDictionary;
+    document.getElementById('suppress-words-instruction').textContent = suppressWordsInstruction;
+    document.getElementById('dictionary-file-format').textContent = dictionaryFileFormat;
+    document.getElementById('upload-button').textContent = uploadButton;
+    document.getElementById('download-button').textContent = downloadButton;
     }
+    
 
     // Event listener for language dropdown changes
     const languageSelect = document.getElementById('language-select');
@@ -146,6 +166,52 @@ document.addEventListener('DOMContentLoaded', function() {
             });
       });
     }
+
+    
+        // Initialize dictionary status
+    updateDictionaryStatus();
+
+    // Upload button
+    document.getElementById('upload-button').addEventListener('click', function() {
+        const fileInput = document.getElementById('dictionary-upload');
+        const file = fileInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.readAsText(file, 'UTF-8');
+            reader.onload = function(evt) {
+                localStorage.setItem('dictionaryCSV', evt.target.result);
+                updateDictionaryStatus();
+            }
+        }
+    });
+
+    // Download button
+    document.getElementById('download-button').addEventListener('click', function() {
+        const csvContent = localStorage.getItem('dictionaryCSV');
+        if (csvContent) {
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = 'dictionary.csv';
+            document.body.appendChild(a);
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    });
+
+
+    
+    function updateDictionaryStatus() {
+        const statusElement = document.getElementById('dictionary-status');
+        if (localStorage.getItem('dictionaryCSV')) {
+            statusElement.textContent = 'registered';
+        } else {
+            statusElement.textContent = 'empty';
+        }
+    }
+
     
     // デバッグ用 変数の値確認用
     document.getElementById('show-storage').addEventListener('click', function() {
@@ -157,5 +223,13 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('storage-output').innerText = storageText;
         });
     });
+    
+    // Show Dictionary button
+    document.getElementById('show-dictionary-btn').addEventListener('click', function() {
+        const csvContent = localStorage.getItem('dictionaryCSV');
+        const debugTextarea = document.getElementById('debug-textarea');
+        debugTextarea.value = csvContent ? csvContent : "ファイルなし";
+    });
+
 
 });
