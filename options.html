@@ -32,15 +32,19 @@
         </form>
     </div>
 
-    <!-- Counter and Cost Section -->
+    <!-- Counter and Total Tokens and Estimated Cost -->
     <div class="section">
         <h2 id="counter-and-cost"></h2>
-	<p><span id="current-counter-title"></span><span id="current-counter">0</span></p>
+	    <p><span id="current-counter-title"></span><span id="current-counter">0</span></p>
+        <p><span id="current-tokens-title"></span><span id="total-tokens">0</span></p>
         <p><span id="estimated-cost-title"></span> $<span id="estimated-cost">0.00</span></p>
         <p><span id="check-openai-pricing"></span>：<a href="https://platform.openai.com/pricing" target="_blank">https://platform.openai.com/pricing</a></p>
         <p><label id="set-counter-manually" for="manual-counter"></label>
         <input type="number" id="manual-counter" min="0">
         <button id="set-counter"></button></p>
+        <p><label id="set-tokens-manually" for="manual-tokens"></label>
+        <input type="number" id="manual-tokens" min="0">
+        <button id="set-tokens"></button></p>
     </div>
 
     <!-- History Section -->
@@ -55,6 +59,7 @@
         <button id="reset-history"></button>
         <button id="reset-counter"></button>
         <button id="reset-dictionary"></button>
+        <button id="reset-total-tokens"><span id="reset-tokens"></span></button>
     </div>
 
     <!-- Personal Information Check Section -->
@@ -98,7 +103,7 @@
   <p>Source code available on <a href="https://github.com/tanuu5/ChatGPT_ex_chrome" target="_blank" rel="noopener noreferrer">GitHub</a></p>
 </footer>
 
-<!-- デバッグ用 chrome.storage.sync 変数および格納されている値の確認 
+<!-- デバッグ用 chrome.storage.sync 変数および格納されている値の確認     -->
     <div class="section">
         <h2>DEBUG AREA</h2>
             <button id="show-storage">Show Storage</button>
@@ -106,6 +111,6 @@
             <button id="show-dictionary-btn">Display dictionary contents</button><br>
             <textarea id="debug-textarea" rows="10" cols="50"></textarea>
     </div>
-    -->
+
 </body>
 </html>

@@ -1,8 +1,30 @@
 document.addEventListener('DOMContentLoaded', function() {
-        // Load and display the current counter and estimated cost
+    // Load and display the current counter and estimated cost
     var counter = parseInt(localStorage.getItem('counter'), 10) || 0;
     document.getElementById('current-counter').innerText = counter;
-    document.getElementById('estimated-cost').innerText = (counter * 0.002).toFixed(2);
+    //document.getElementById('estimated-cost').innerText = (counter * 0.002).toFixed(2);
+    
+    // Load and display the total tokens and estimated cost
+    chrome.storage.sync.get('total_tokens', function(data) {
+        var total_tokens = data.total_tokens || 0;
+        document.getElementById('total-tokens').innerText = total_tokens;
+        document.getElementById('estimated-cost').innerText = (total_tokens * 0.000002).toFixed(2);
+    });
+
+    // Reset total tokens
+    document.getElementById('reset-total-tokens').addEventListener('click', function() {
+        chrome.storage.sync.set({total_tokens: 0}, function() {
+            document.getElementById('total-tokens').innerText = 0;
+            document.getElementById('estimated-cost').innerText = '0.00';
+            alert('Total tokens have been reset.');
+        });
+    });
+
+    document.getElementById('reset-total-tokens').addEventListener('click', function() {
+        chrome.storage.sync.set({total_tokens: 0}, function() {
+            console.log('Total tokens have been reset in chrome.storage.sync');
+        });
+    });
 
     // Load API Key if available and mask it
     chrome.storage.sync.get('openaiApiKey', function(data) {
@@ -24,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
+
 
     // Reset Counter
     document.getElementById('reset-counter').addEventListener('click', function() {
@@ -71,11 +94,32 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('counter', newCounter);
         updateCounterAndCost();
     });
+    
+    // Set Tokens Manually
+    document.getElementById('set-tokens').addEventListener('click', function() {
+        var newTokens = parseInt(document.getElementById('manual-tokens').value, 10);
+        if (isNaN(newTokens)) {
+            alert('Please enter a valid number.');
+            return;
+        }
+        chrome.storage.sync.set({'total_tokens': newTokens}, function() {
+            updateTokensAndCost();
+        });
+    });
 
     function updateCounterAndCost() {
         var counter = parseInt(localStorage.getItem('counter'), 10) || 0;
         document.getElementById('current-counter').innerText = counter;
-        document.getElementById('estimated-cost').innerText = (counter * 0.002).toFixed(2);
+        //document.getElementById('estimated-cost').innerText = (counter * 0.002).toFixed(2);
+    }
+    
+    // Update Tokens and Estimated Cost
+    function updateTokensAndCost() {
+        chrome.storage.sync.get('total_tokens', function(data) {
+            var tokens = data.total_tokens || 0;
+            document.getElementById('total-tokens').innerText = tokens;
+            document.getElementById('estimated-cost').innerText = (tokens * 0.000002).toFixed(2);
+        });
     }
 
     // Load the state of the personal information check feature
@@ -99,16 +143,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const saveButton = language === 'ja' ? '保存' : 'Save';
     const counterAndCost = language === 'ja' ? 'カウンターとコスト' : 'Counter and Cost';
     const currentCounterTitle = language === 'ja' ? '現在のカウンター：' : 'Current counter:';
+    const currentTokensTitle = language === 'ja' ? '累計トークン数：' : 'Total Tokens:';
     const estimatedCostTitle = language === 'ja' ? '推定コスト：' : 'Estimated cost:';
     const checkOpenAIPricing = language === 'ja' ? '正確な請求については、OpenAIの価格ページを確認してください。' : 'Check the OpenAI Pricing page for accurate billing.';
     const setCounterManually = language === 'ja' ? '手動でカウンターを設定します：' : 'Set Counter Manually:';
     const setCounter = language === 'ja' ? 'カウンターを設定する' : 'Set Counter';
+    const setTokensManually = language === 'ja' ? '手動でトークン数を設定します：' : 'Set Tokens Manually:';
+    const setTokens = language === 'ja' ? 'トークン数を設定する' : 'Set Tokens';
     const history = language === 'ja' ? '履歴' : 'History';
     const downloadHistory = language === 'ja' ? '履歴のダウンロード' : 'Download History';
     const reset = language === 'ja' ? 'リセット' : 'Reset';
     const resetHistory = language === 'ja' ? '履歴のリセット' : 'Reset History';
     const resetCounter = language === 'ja' ? 'カウンターリセット' : 'Reset Counter';
     const resetDictionary = language === 'ja' ? '辞書設定リセット' : 'Reset Dictionary Settings';
+    const resetTokens = language === 'ja' ? 'トークン数リセット' : 'Reset Tokens';
     const personalInfoCheck = language === 'ja' ? '個人情報チェック' : 'Personal Information Check';
     const enableDisableInfoCheck = language === 'ja' ? '個人情報チェック機能の有効・無効を設定します。' : 'Enable or disable the personal information check feature.';
     const enableInfoCheckDetail = language === 'ja' ? '個人情報チェックを有効にする(電話番号、メールアドレス、郵便番号のみ検出)' : 'Enable Personal Information Check.(Only phone numbers, email addresses, and zip codes are detected.)';
@@ -125,15 +173,19 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('save-button').textContent = saveButton;
     document.getElementById('counter-and-cost').textContent = counterAndCost;
     document.getElementById('current-counter-title').textContent = currentCounterTitle;
+    document.getElementById('current-tokens-title').textContent = currentTokensTitle;
     document.getElementById('estimated-cost-title').textContent = estimatedCostTitle;
     document.getElementById('check-openai-pricing').textContent = checkOpenAIPricing;
     document.getElementById('set-counter-manually').textContent = setCounterManually;
     document.getElementById('set-counter').textContent = setCounter;
+    document.getElementById('set-tokens-manually').textContent = setTokensManually;
+    document.getElementById('set-tokens').textContent = setTokens;
     document.getElementById('history').textContent = history;
     document.getElementById('download-history').textContent = downloadHistory;
     document.getElementById('reset').textContent = reset;
     document.getElementById('reset-history').textContent = resetHistory;
     document.getElementById('reset-counter').textContent = resetCounter;
+    document.getElementById('reset-tokens').textContent = resetTokens;
     document.getElementById('dictionary-settings').textContent = dictionarySettings;
     document.getElementById('personal-info-check').textContent = personalInfoCheck;
     document.getElementById('enable-disable-info-check').textContent = enableDisableInfoCheck;

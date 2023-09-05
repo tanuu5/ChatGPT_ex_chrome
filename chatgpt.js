@@ -130,6 +130,24 @@ async function sendToChatGPT(messages) {
                     var chatGptMessageElem = document.createElement('p');
                     chatGptMessageElem.innerHTML = "ChatGPT: " + chatGptMessageContent.replace(/\n/g, "<br>");
                     document.getElementById('chat-log').appendChild(chatGptMessageElem);
+                    
+                    // Assume that the total tokens used are available in the API response
+                    // This is a placeholder; replace with the actual field from the API response
+                    var total_tokens_from_api = response.usage.total_tokens;  // この部分はAPIの仕様に合わせて変更してください
+
+                    // Get current total tokens from chrome.storage.sync
+                    chrome.storage.sync.get('total_tokens', function(data) {
+                        var current_total_tokens = data.total_tokens || 0;
+
+                        // Add the new tokens to the current total tokens
+                        var new_total_tokens = current_total_tokens + total_tokens_from_api;
+
+                        // Store the new total_tokens into chrome.storage.sync
+                        chrome.storage.sync.set({total_tokens: new_total_tokens}, function() {
+                            console.log('New total tokens are stored in chrome.storage.sync');
+                        });
+                    });
+                    
                 } else if (this.status === 401) {
                     alert("The API key is incorrect.(APIキーが間違っています。)");
                 } else {
@@ -144,6 +162,7 @@ async function sendToChatGPT(messages) {
         };
 
         xhr.send(JSON.stringify(data));
+        
     });
 }
 
