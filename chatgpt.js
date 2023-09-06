@@ -203,3 +203,180 @@ chrome.storage.sync.get('selectedLanguage', function(data) {
   const savedLanguage = data.selectedLanguage || 'en';
   setPopupLanguage(savedLanguage);
 });
+
+
+// Function to load JSON file
+async function loadJSON(filename) {
+  const response = await fetch(filename);
+  const data = await response.json();
+  return data;
+}
+
+// Load the prompts from prompt.json
+let prompts = [];
+loadJSON('prompt.json').then(data => {
+  prompts = data;
+});
+
+// Load the selected language from Chrome storage
+//let selectedLanguage = 'ja';  // Default to Japanese
+chrome.storage.sync.get('selectedLanguage', function(data) {
+  if (data.selectedLanguage) {
+    selectedLanguage = data.selectedLanguage;
+  }
+});
+
+// Get the message input element
+const messageInput = document.getElementById('message-input');
+
+// Create a container for suggestions
+const suggestionContainer = document.createElement('div');
+suggestionContainer.id = 'suggestion-container';
+document.body.appendChild(suggestionContainer);
+
+
+// JavaScript code to handle unique prompt suggestions
+const suggestedPromptIds = new Set();
+
+// Clear previous suggestions and suggestedPromptIds
+suggestionContainer.innerHTML = '';
+suggestedPromptIds.clear();
+
+// Get the current input text
+const currentInput = messageInput.value;
+
+// Search for matching tags in the prompts
+prompts.forEach(prompt => {
+    let shouldAddSuggestion = false;
+    prompt.tags.forEach(tag => {
+        if (currentInput.includes(tag)) {
+            shouldAddSuggestion = true;
+        }
+    });
+
+    if (shouldAddSuggestion && !suggestedPromptIds.has(prompt.id)) {
+        suggestedPromptIds.add(prompt.id);  // Add the prompt ID to the Set of suggested prompts
+
+        // Create a suggestion element
+        const suggestion = document.createElement('div');
+        suggestion.className = 'suggestion';
+        suggestion.textContent = selectedLanguage === 'ja' ? prompt.prompt_ja : prompt.prompt_en;
+
+        // Add click event to fill the text area with the prompt
+        suggestion.addEventListener('click', function() {
+            messageInput.value = selectedLanguage === 'ja' ? prompt.prompt_ja : prompt.prompt_en;
+        });
+
+        // Add the suggestion to the suggestion container
+        suggestionContainer.appendChild(suggestion);
+    }
+});
+
+// Update the suggestion count whenever new suggestions are added
+function updateSuggestionCount() {
+    const count = suggestedPromptIds.size;  // Use the size of the Set to get the count of unique suggestions
+    document.getElementById('suggestion-count').textContent = count + ' Suggestions';
+}
+
+// Listen for input events on the message input
+messageInput.addEventListener('input', function() {
+  // Clear previous suggestions
+  suggestionContainer.innerHTML = '';
+
+  const suggestedPromptIds = new Set();  // ここでSetを初期化
+
+  // Get the current input text
+  const currentInput = messageInput.value;
+
+  // Search for matching tags in the prompts
+  prompts.forEach(prompt => {
+    let shouldAddSuggestion = false;
+    prompt.tags.forEach(tag => {
+      if (currentInput.includes(tag)) {
+        shouldAddSuggestion = true;
+      }
+    });
+
+    if (shouldAddSuggestion && !suggestedPromptIds.has(prompt.id)) {
+      suggestedPromptIds.add(prompt.id);  // Add the prompt ID to the Set of suggested prompts
+
+      // Create a suggestion element
+      const suggestion = document.createElement('div');
+      suggestion.className = 'suggestion';
+      suggestion.textContent = selectedLanguage === 'ja' ? prompt.prompt_ja : prompt.prompt_en;
+
+      // Add click event to fill the text area with the prompt
+      suggestion.addEventListener('click', function() {
+        messageInput.value = selectedLanguage === 'ja' ? prompt.prompt_ja : prompt.prompt_en;
+      });
+
+      // Add the suggestion to the suggestion container
+      suggestionContainer.appendChild(suggestion);
+    }
+  });
+
+  // Update the suggestion count whenever new suggestions are added
+  const count = suggestedPromptIds.size;  // Use the size of the Set to get the count of unique suggestions
+  document.getElementById('suggestion-count').textContent = count + ' Suggestions';
+});
+
+
+// Function to scroll suggestions
+function scrollSuggestions(direction) {
+  const container = document.getElementById('suggestion-container');
+  if (direction === 'left') {
+    container.scrollLeft -= 100;
+  } else {
+    container.scrollLeft += 100;
+  }
+}
+
+// Update the suggestion count whenever new suggestions are added
+function updateSuggestionCount() {
+  const count = document.querySelectorAll('.suggestion').length;
+  document.getElementById('suggestion-count').textContent = count + ' Suggestions';
+}
+
+// Update the suggestion count initially and whenever new suggestions are added
+messageInput.addEventListener('input', function() {
+  updateSuggestionCount();
+});
+
+
+// JavaScript code to handle active suggestion
+let activeSuggestionIndex = 0;
+function showActiveSuggestion() {
+  const suggestions = document.querySelectorAll('.suggestion');
+  suggestions.forEach((suggestion, index) => {
+    if (index === activeSuggestionIndex) {
+      suggestion.classList.add('active');
+    } else {
+      suggestion.classList.remove('active');
+    }
+  });
+}
+
+// Initialize the first suggestion as active
+showActiveSuggestion();
+
+// Update the active suggestion when arrow buttons are clicked
+document.getElementById('scroll-left').addEventListener('click', function() {
+  if (activeSuggestionIndex > 0) {
+    activeSuggestionIndex--;
+  }
+  showActiveSuggestion();
+});
+
+document.getElementById('scroll-right').addEventListener('click', function() {
+  const totalSuggestions = document.querySelectorAll('.suggestion').length;
+  if (activeSuggestionIndex < totalSuggestions - 1) {
+    activeSuggestionIndex++;
+  }
+  showActiveSuggestion();
+});
+
+// Update the active suggestion initially and whenever new suggestions are added
+messageInput.addEventListener('input', function() {
+  activeSuggestionIndex = 0;  // Reset to the first suggestion
+  showActiveSuggestion();
+});

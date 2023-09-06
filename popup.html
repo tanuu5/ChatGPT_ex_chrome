@@ -3,25 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <title>GPT-ChatDIY Popup</title>
-    <style>
-        body {
-            width: 400px;
-        }
-        #history-section {
-            display: none;
-        }
-    </style>
+    
+<style>
+    /* Existing styles */
+    body {
+        width: 400px;
+    }
+    #history-section {
+        display: none;
+    }
+    /* New styles for suggestions */
+    #suggestion-container {
+      overflow: hidden;
+      width: 400px;
+      height: auto;
+    }
+
+    .suggestion {
+      display: none;
+    }
+
+    .suggestion.active {
+      display: block;
+    }
+
+/* CSS to make specified sections invisible */
+#history-section, #additional-info, #toggle-history {
+  display: none;
+}
+
+</style>
+
 </head>
 <body>
     <h1>GPT-ChatDIY</h1>
         <form id="chat-form">
-            <textarea id="message-input" cols="50" rows="30"></textarea>
+            <textarea id="message-input" cols="50" rows="10"></textarea>
             <button type="submit"><span id="send-button"></span></button>
         </form>
+
+        
+       
+        <div id="suggestion-container"></div>
         <div id="chat-log"></div>
         <div id="loading-indicator">
           <span id="message-placeholder1"></span><br>
           <span id="message-placeholder2"></span>
+        </div>
+        <h2>プロンプトサジェストBeta</h2>
+        <a>以下のプロンプトをクリックして、入力エリアに挿入できます。</a>
+        <div id="suggestion-navigation">
+          <button id="scroll-left" onclick="scrollSuggestions('left')">←</button>
+          <button id="scroll-right" onclick="scrollSuggestions('right')">→</button>
+          <span id="suggestion-count">0 Suggestions</span>
         </div>
 
     <div id="history-section">
@@ -31,7 +65,7 @@
     <div id="additional-info">
         <p><span id="counter">0</span></p>
     </div>
-    <button id="toggle-history">Show/hide history</button><br><a>You can also delete or download the history from the options.</a>
+    <button id="toggle-history">Show/hide history</button><br>
     <script src="chatgpt.js"></script>
 </body>
 </html>

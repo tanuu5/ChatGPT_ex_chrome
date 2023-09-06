@@ -1,0 +1,45 @@
+[
+    {
+        "id": "00001",
+        "date": "20230906",
+        "writer": "Tanu",
+        "organization": "none",
+        "url": "https://www.sample.co.jp",
+        "prompt_ja": "あなたは図書館司書です。\n以下のテーマに沿ったオススメの本を5冊提示してください。",
+        "prompt_en": "You are a librarian. Please provide five book recommendations on the following topics.",
+        "tags": [
+            "本",
+            "図書館",
+            "オススメ",
+            "book"
+        ]
+    },
+    {
+        "id": "00002",
+        "date": "20230906",
+        "writer": "John",
+        "organization": "Book Club",
+        "url": "https://www.bookclub.com",
+        "prompt_ja": "あなたは料理のプロです。初心者向けの簡単なレシピを教えてください。",
+        "prompt_en": "You are a professional chef. Please provide a simple recipe for beginners.",
+        "tags": [
+            "料理",
+            "レシピ",
+            "初心者"
+        ]
+    },
+    {
+        "id": "00003",
+        "date": "20230906",
+        "writer": "Alice",
+        "organization": "Travel Agency",
+        "url": "https://www.travel.com",
+        "prompt_ja": "あなたは旅行のエキスパートです。秋に訪れるべき素敵な場所を5箇所挙げてください。",
+        "prompt_en": "You are a travel expert. Please list five beautiful places to visit in the fall.",
+        "tags": [
+            "旅行",
+            "秋",
+            "場所"
+        ]
+    }
+]
