@@ -32,14 +32,54 @@
   display: none;
 }
 
+    /* Adjust the input area to align with the Clear button */
+    #message-input {
+        padding-right: 1ch;  /* Equivalent to the width of one character */
+    }
+
+    /* Create a container for the "プロンプトサジェストBeta" section with a light green background */
+    #suggestion-section {
+        border: 1px solid #c8e6c9;  /* Light green border */
+        padding: 10px;
+        margin-top: 20px;
+        background-color: #e8f5e9;  /* Light green background */
+    }
+
+    body {
+        background-color: #e0f2f1;  /* Light green */
+    }
+
+    #message-input {
+        border-radius: 5px;
+        transition: box-shadow 0.3s ease-in-out;
+    }
+
+    #message-input:focus {
+        box-shadow: 0 0 5px #64b5f6;  /* Light blue shadow */
+    }
+
+    .suggestion.active {
+        background-color: #fff9c4;  /* Light yellow */
+    }
+
+    #clear-button, #copy-button {
+        float: right;
+        margin-left: 10px;
+    }
 </style>
+
 
 </head>
 <body>
     <h1>GPT-ChatDIY</h1>
         <form id="chat-form">
-            <textarea id="message-input" cols="50" rows="10"></textarea>
+            <textarea id="message-input" cols="53" rows="10"></textarea>
+
+
             <button type="submit"><span id="send-button"></span></button>
+<button id="clear-button" type="button">クリア</button>
+<button id="copy-button" type="button">コピー</button>
+
         </form>
 
         
@@ -50,7 +90,7 @@
           <span id="message-placeholder1"></span><br>
           <span id="message-placeholder2"></span>
         </div>
-        <h2>プロンプトサジェストBeta</h2>
+        <div id="suggestion-section"><h2>プロンプトサジェストBeta</h2>
         <a>以下のプロンプトをクリックして、入力エリアに挿入できます。</a>
         <div id="suggestion-navigation">
           <button id="scroll-left" onclick="scrollSuggestions('left')">←</button>
@@ -66,6 +106,10 @@
         <p><span id="counter">0</span></p>
     </div>
     <button id="toggle-history">Show/hide history</button><br>
-    <script src="chatgpt.js"></script>
+    <script src="chatgpt.js"></script></div>
+
+<div id="toast-notification" style="display: none; position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); padding: 10px; background-color: #323232; color: #ffffff; border-radius: 5px; z-index: 1000;">
+    コピーしました
+</div>
 </body>
 </html>

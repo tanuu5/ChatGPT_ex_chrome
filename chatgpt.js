@@ -380,3 +380,24 @@ messageInput.addEventListener('input', function() {
   activeSuggestionIndex = 0;  // Reset to the first suggestion
   showActiveSuggestion();
 });
+
+// Function to clear the input area
+document.getElementById('clear-button').addEventListener('click', function() {
+    document.getElementById('message-input').value = '';
+});
+
+// Function to copy the input content to clipboard
+document.getElementById('copy-button').addEventListener('click', function() {
+    const textarea = document.getElementById('message-input');
+    textarea.select();
+    document.execCommand('copy');
+});
+
+// Function to show toast notification
+document.getElementById('copy-button').addEventListener('click', function() {
+    const toast = document.getElementById('toast-notification');
+    toast.style.display = 'block';
+    setTimeout(function() {
+        toast.style.display = 'none';
+    }, 2000);  // Hide the toast after 2 seconds
+});
