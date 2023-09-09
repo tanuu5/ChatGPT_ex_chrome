@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>データ管理</title>
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .section {
+            margin-bottom: 15px;
+        }
+        .section h2 {
+            margin-top: 0;
+        }
+        p {
+            margin: 5px;
+        }
+        .tab-buttons {
+            margin-bottom: 20px;
+        }
+        .tab-buttons button {
+            margin-right: 10px;
+        }
+        .tab-content {
+            display: none;
+        }
+        .active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<h1>データ管理</h1>
+<div class="tab-buttons">
+<button onclick="showTab('register')">登録</button>
+<button onclick="showTab('update')">更新</button>
+<button onclick="showTab('inquiry')">照会</button>
+<button onclick="showTab('delete')">削除</button>
+</div>
+<div class="tab-content" id="register">
+<!-- Registration Form Goes Here -->
+<label for="writer">Writer (自由入力)</label><input id="writer" type="text"/><br/><label for="organization">Organization (自由入力)</label><input id="organization" type="text"/><br/><label for="url">URL (自由入力)</label><input id="url" type="text"/><br/><label for="prompt_ja">Prompt JA (必須入力)</label><input id="prompt_ja" type="text"/><br/><label for="prompt_en">Prompt EN (自由入力)</label><input id="prompt_en" type="text"/><br/><label for="tags">Tags (最大10, 必須入力)</label><input id="tags" type="text"/><br/><button id="register-confirm">確定</button></div>
+<div class="tab-content" id="update">
+<!-- Update Form Goes Here -->
+<label for="update-id">ID (必須)</label><input id="update-id" type="text"/><br/><label for="update-writer">Writer (自由入力)</label><input id="update-writer" type="text"/><br/><label for="update-organization">Organization (自由入力)</label><input id="update-organization" type="text"/><br/><label for="update-url">URL (自由入力)</label><input id="update-url" type="text"/><br/><label for="update-prompt_ja">Prompt JA (必須入力)</label><input id="update-prompt_ja" type="text"/><br/><label for="update-prompt_en">Prompt EN (自由入力)</label><input id="update-prompt_en" type="text"/><br/><label for="update-tags">Tags (最大10, 必須入力)</label><input id="update-tags" type="text"/><br/><button id="update-confirm">確定</button></div>
+<div class="tab-content" id="inquiry">
+<!-- Inquiry Content Goes Here -->
+<table id="data-table"></table></div>
+<div class="tab-content" id="delete">
+<!-- Delete Form Goes Here -->
+<label for="delete-id">ID (必須)</label><input id="delete-id" type="text"/><br/><button id="delete-confirm">確定</button></div>
+
+<script src="data_manager.js"></script></body>
+</html>
