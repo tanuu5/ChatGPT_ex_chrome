@@ -189,13 +189,31 @@ document.getElementById('chat-form').addEventListener('submit', function(event) 
 
 // Function to set the UI language in the popup
 function setPopupLanguage(language) {
-  const messageText1 = language === 'ja' ? '送信ボタンを押した後、返信がくるまで少々お待ちください...' : 'Please wait a moment after you hit send until you hear back... ';
-  const messageText2 = language === 'ja' ? '（メッセージが正常に受信された場合、このメッセージは消えます。）' : '(This message will disappear when the message is successfully received.)';
+  const messageText1 = language === 'ja' ? '～使い方～' : '～How to use～';
+  const messageText2 = language === 'ja' ? '1.上記の入力エリアにプロンプトを入力します。' : '1. Enter the prompt in the input area above.';
+  const messageText3 = language === 'ja' ? '2.プロンプトサジェストエリアから選択することもできます。' : '2. You can also choose from the prompt suggestion area.';
+  const messageText4 = language === 'ja' ? '3.送信ボタンを押し、少し待つことで結果が表示されます。' : '3. Press the Send button and wait a few moments to see the results.';
+  const messageText5 = language === 'ja' ? '※返答の長さによって、数分待つ場合もあります。' : '*You may have to wait several minutes depending on the length of the response.';
+  const messageText6 = language === 'ja' ? '☆このメッセージは正常に受信した際に非表示になります☆' : '☆This message will be hidden when it is successfully received☆.';
+  const messageText7 = language === 'ja' ? '注意：現時点で継続したやりとりはできません。' : 'Note: Continued communication is not possible at this time.';
   const sendButton = language === 'ja' ? '送信' : 'Send';
+  const clearButton = language === 'ja' ? 'クリア' : 'Clear';
+  const copyButton = language === 'ja' ? 'コピー' : 'Copy';
+  const promptSuggest = language === 'ja' ? 'プロンプトサジェスト' : 'Prompt Suggestions';
+  const promptSuggesttext = language === 'ja' ? '以下のプロンプトをクリックして、入力エリアに挿入できます。' : 'The following prompts can be inserted into the input area by clicking on them.';
   
   document.getElementById('message-placeholder1').textContent = messageText1;
   document.getElementById('message-placeholder2').textContent = messageText2;
+  document.getElementById('message-placeholder3').textContent = messageText3;
+  document.getElementById('message-placeholder4').textContent = messageText4;
+  document.getElementById('message-placeholder5').textContent = messageText5;
+  document.getElementById('message-placeholder6').textContent = messageText6;
+  document.getElementById('message-placeholder7').textContent = messageText7;
   document.getElementById('send-button').textContent = sendButton;
+  document.getElementById('clear-button1').textContent = clearButton;
+  document.getElementById('copy-button1').textContent = copyButton;
+  document.getElementById('prompt-suggest').textContent = promptSuggest;
+  document.getElementById('prompt-suggest-text').textContent = promptSuggesttext;
 }
 
 // Initialize language setting for the popup
